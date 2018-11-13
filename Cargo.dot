@@ -1,5 +1,5 @@
 digraph dependencies {
-	N0[label="hematite"];
+	N0[label="CubeAge"];
 	N2[label="camera_controllers"];
 	N3[label="docopt"];
 	N4[label="flate2"];

@@ -1,13 +1,13 @@
 [package]
 
-name = "hematite"
+name = "cube_age"
 version = "0.0.28"
 license = "MIT"
 authors = ["bvssvni <bvssvni@gmail.com>"]
 keywords = ["minecraft", "piston", "client"]
 description = "A simple Minecraft client"
-repository = "https://github.com/PistonDevelopers/hematite.git"
-homepage = "http://hematite.piston.rs"
+repository = "https://github.com/PistonDevelopers/CubeAge.git"
+homepage = "http://CubeAge.piston.rs"
 exclude = ["home/*"]
 
 [profile.release]
@@ -16,24 +16,21 @@ debug = false
 
 [[bin]]
 
-name = "hematite"
+name = "cube_age"
 path = "src/main.rs"
 
 [dependencies]
-byteorder = "1.0.0"
 camera_controllers = "0.24.0"
-docopt = "0.6.78"
-flate2 = "0.2.13"
 fps_counter = "1.0.0"
-gfx = "0.17.0"
-gfx_core = "0.8.0"
-gfx_device_gl = "0.15.0"
-libc = "0.2.7"
-memmap = "0.2.3"
+gfx = "0.17"
+gfx_core = "0.8"
+gfx_device_gl = "0.15"
+libc = "0.2.43"
+memmap = "0.7.0"
 piston = "0.37.0"
-piston3d-gfx_voxel = "0.26.0"
-pistoncore-glutin_window = "0.48.0"
-rustc-serialize = "0.3.18"
+piston_window = "0.80"
+rustc-serialize = "0.3"
 shader_version = "0.3.0"
 vecmath = "0.3.0"
-zip = "0.1.16"
+zip = "0.4"
+vek = "0.9.5"

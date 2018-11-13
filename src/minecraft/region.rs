@@ -12,7 +12,7 @@ use chunk::{
     ChunkColumn,
     EMPTY_CHUNK,
     LightLevel,
-    SIZE
+    CHUNK_SIZE
 };
 use minecraft::nbt::Nbt;
 
@@ -20,10 +20,10 @@ pub struct Region {
     mmap: Mmap,
 }
 
-fn array_16x16x16<T, F>(mut f: F) -> [[[T; SIZE]; SIZE]; SIZE]
+fn array_16x16x16<T, F>(mut f: F) -> [[[T; CHUNK_SIZE]; CHUNK_SIZE]; CHUNK_SIZE]
     where F: FnMut(usize, usize, usize) -> T
 {
-    Array::from_fn(|y| -> [[T; SIZE]; SIZE] {
+    Array::from_fn(|y| -> [[T; CHUNK_SIZE]; CHUNK_SIZE] {
         Array::from_fn(|z| -> [T; 16] {
             Array::from_fn(|x| f(x, y, z))
         })
@@ -83,7 +83,7 @@ impl Region {
 
             let chunk = Chunk {
                 blocks: array_16x16x16(|x, y, z| {
-                    let i = (y * SIZE + z) * SIZE + x;
+                    let i = (y * CHUNK_SIZE + z) * CHUNK_SIZE + x;
                     let top = match blocks_top {
                         Some(blocks_top) => {
                             (blocks_top[i >> 1] >> ((i & 1) * 4)) & 0x0f
@@ -97,14 +97,14 @@ impl Region {
                              | (data as u16)
                     }
                 }),
-                light_levels: array_16x16x16(|x, y, z| {
+                /*light_levels: array_16x16x16(|x, y, z| {
                     let i = (y * 16 + z) * 16 + x;
                     let block = (block_light[i >> 1] >> ((i & 1) * 4)) & 0x0f;
                     let sky = (sky_light[i >> 1] >> ((i & 1) * 4)) & 0x0f;
                     LightLevel {
                         value: block | (sky << 4)
                     }
-                }),
+                }),*/
             };
             while chunks.len() <= y as usize {
                 chunks.push(*EMPTY_CHUNK);
@@ -116,13 +116,13 @@ impl Region {
         Some(ChunkColumn {
             chunks: chunks,
             buffers: Array::from_fn(|_| RefCell::new(None)),
-            biomes: Array::from_fn(|z| -> [BiomeId; SIZE] {
+            /*biomes: Array::from_fn(|z| -> [BiomeId; CHUNK_SIZE] {
                 Array::from_fn(|x| {
                     BiomeId {
-                        value: biomes[z * SIZE + x]
+                        value: biomes[z * CHUNK_SIZE + x]
                     }
                 })
-            })
+            })*/
         })
     }
 }

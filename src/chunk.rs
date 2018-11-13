@@ -31,25 +31,25 @@ impl LightLevel {
     }
 }
 
-pub const SIZE: usize = 16;
+pub const CHUNK_SIZE: usize = 16;
 
 /// A chunk of SIZE x SIZE x SIZE blocks, in YZX order.
 #[derive(Copy, Clone)]
 pub struct Chunk {
-    pub blocks: [[[BlockState; SIZE]; SIZE]; SIZE],
-    pub light_levels: [[[LightLevel; SIZE]; SIZE]; SIZE]
+    pub blocks: [[[BlockState; CHUNK_SIZE]; CHUNK_SIZE]; CHUNK_SIZE],
+    //pub light_levels: [[[LightLevel; CHUNK_SIZE]; CHUNK_SIZE]; CHUNK_SIZE]
 }
 
 // TODO: Change to const pointer.
 pub const EMPTY_CHUNK: &'static Chunk = &Chunk {
-    blocks: [[[EMPTY_BLOCK; SIZE]; SIZE]; SIZE],
-    light_levels: [[[LightLevel {value: 0xf0}; SIZE]; SIZE]; SIZE]
+    blocks: [[[EMPTY_BLOCK; CHUNK_SIZE]; CHUNK_SIZE]; CHUNK_SIZE],
+    //light_levels: [[[LightLevel {value: 0xf0}; CHUNK_SIZE]; CHUNK_SIZE]; CHUNK_SIZE]
 };
 
 pub struct ChunkColumn<R: gfx::Resources> {
     pub chunks: Vec<Chunk>,
-    pub buffers: [RefCell<Option<gfx::handle::Buffer<R, Vertex>>>; SIZE],
-    pub biomes: [[BiomeId; SIZE]; SIZE]
+    pub buffers: [RefCell<Option<gfx::handle::Buffer<R, Vertex>>>; CHUNK_SIZE],
+    //pub biomes: [[BiomeId; CHUNK_SIZE]; CHUNK_SIZE]
 }
 
 pub struct ChunkManager<R: gfx::Resources> {
@@ -70,8 +70,7 @@ impl<R: gfx::Resources> ChunkManager<R> {
     pub fn each_chunk_and_neighbors<'a, F>(&'a self, mut f: F)
         where F: FnMut(/*coords:*/ [i32; 3],
                        /*buffer:*/ &'a RefCell<Option<gfx::handle::Buffer<R, Vertex>>>,
-                       /*chunks:*/ [[[&'a Chunk; 3]; 3]; 3],
-                       /*biomes:*/ [[Option<&'a [[BiomeId; SIZE]; SIZE]>; 3]; 3])
+                       /*chunks:*/ [[[&'a Chunk; 3]; 3]; 3])
 
     {
         for &(x, z) in self.chunk_columns.keys() {
@@ -92,8 +91,7 @@ impl<R: gfx::Resources> ChunkManager<R> {
                         )
                     )
                 });
-                f([x, y as i32, z], &central.buffers[y], chunks,
-                  columns.map(|cz| cz.map(|cx| cx.map(|c| &c.biomes))))
+                f([x, y as i32, z], &central.buffers[y], chunks)
             }
         }
     }
