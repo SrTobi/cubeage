@@ -1,6 +1,6 @@
 use std::ops;
 use vek::vec::Vec2;
-
+/*
 pub struct Field<T> {
     pub width: usize,
     pub height: usize,
@@ -16,6 +16,8 @@ impl<T> Field<T> {
             memory: vec![default; width * height]
         }
     }
+
+    pub fn iter
 }
 
 impl<T> ops::Index<Vec2<usize>> for Field<T> {
@@ -33,3 +35,4 @@ impl<T> ops::IndexMut<Vec2<usize>> for Field<T> {
         &mut self.memory[pos.x + pos.y * self.width]
     }
 }
+*/

@@ -9,6 +9,8 @@ description = "A simple Minecraft client"
 repository = "https://github.com/PistonDevelopers/CubeAge.git"
 homepage = "http://CubeAge.piston.rs"
 exclude = ["home/*"]
+edition = "2018"
+
 
 [profile.release]
 opt-level = 2
@@ -20,6 +22,7 @@ name = "cube_age"
 path = "src/main.rs"
 
 [dependencies]
+futures-preview = "0.3.0-alpha.12"
 camera_controllers = "0.24.0"
 fps_counter = "1.0.0"
 gfx = "0.17"
@@ -27,6 +30,8 @@ gfx_core = "0.8"
 gfx_device_gl = "0.15"
 libc = "0.2.43"
 memmap = "0.7.0"
+ndarray = "0.12.1"
+noise = "0.5.1"
 piston = "0.37.0"
 piston_window = "0.80"
 rustc-serialize = "0.3"

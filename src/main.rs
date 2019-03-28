@@ -1,3 +1,4 @@
+#![feature(async_await, await_macro, futures_api)]
 extern crate camera_controllers;
 extern crate fps_counter;
 #[macro_use] extern crate gfx;
@@ -18,8 +19,9 @@ extern crate vek;
 pub mod chunk;
 pub mod shader;
 pub mod utils;
-pub mod world;
-
+pub mod model;
+pub mod renderer;
+pub mod viewmodel;
 
 use std::cmp::max;
 use std::f32::consts::PI;
@@ -43,15 +45,66 @@ use utils::cube;
 use utils::array;
 use array::*;
 
+
+
+
+use std::thread;
+
+use futures::executor::{block_on, ThreadPool, LocalPool};
+use futures::task::{SpawnExt, Spawn, LocalSpawnExt};
+use futures::future::{self, FutureExt};
+use futures::stream::{self, StreamExt};
+use std::time::Duration;
+use futures::task::LocalWaker;
+use futures::Poll;
+use futures::future::LocalFutureObj;
+use futures::future::FutureObj;
+
+fn main() {
+let mut pool = LocalPool::new();
+let mut spawner = pool.spawner();
+
+let f = async {
+    println!("first");
+    3
+};
+
+let handle = spawner.spawn_with_handle(f).unwrap();
+
+//drop(handle);
+
+println!("Start run");
+pool.run();
+
+
+
+    /*block_on(future::lazy(|lw| {
+        loop {
+            if let Poll::Ready(Some(_)) = pool.poll_next_unpin(lw) {
+                // found one more
+                println!("done one more");
+            } else {
+                // either more ready futures (or none at all)
+                println!("nothing to do");
+                break;
+            }
+        }
+    }));*/
+}
+
+
+
+
+
 /*
 static USAGE: &'static str = "
 CubeAge, Minecraft made in Rust!
 
 Usage:
-    CubeAge [options] <world>
+    CubeAge [options] <model>
 
 Options:
-    -p, --path               Fully qualified path for world folder.
+    -p, --path               Fully qualified path for model folder.
     --mcversion=<version>    Minecraft version [default: 1.8.8].
 ";
 
@@ -100,14 +153,14 @@ pub fn fill_buffer(buffer: &mut Vec<shader::Vertex>, coords: Vec3<i32>, _chunks:
 }
 
 
-fn main() {
+fn _main2() {
 
     // Automagically pull MC assets
     //minecraft::fetch_assets(&args.flag_mcversion);
 
-    // Automagically expand path if world is located at
+    // Automagically expand path if model is located at
     // $MINECRAFT_ROOT/saves/<world_name>
-    /*let world = if args.flag_path {
+    /*let model = if args.flag_path {
         PathBuf::from(&args.arg_world)
     } else {
         let mut mc_path = minecraft::vanilla_root_path();
@@ -116,7 +169,7 @@ fn main() {
         mc_path
     };*/
 
-    //let file_name = PathBuf::from(world.join("level.dat"));
+    //let file_name = PathBuf::from(model.join("level.dat"));
     //let level_reader = GzDecoder::new(File::open(file_name).unwrap()).unwrap();
     //let level = minecraft::nbt::Nbt::from_reader(level_reader).unwrap();
     //println!("{:?}", level);
@@ -128,7 +181,7 @@ fn main() {
     let player_pitch = 0.0; //player_rot[1];
 
     //let regions = player_chunk.map(|x| x >> 5);
-    //let region_file = world.join(
+    //let region_file = model.join(
     //        format!("region/r.{}.{}.mca", regions[0], regions[1])
     //    );
     //let region = minecraft::region::Region::open(&region_file).unwrap();
@@ -292,7 +345,7 @@ fn main() {
                     num_total_chunks,
                     end_duration.as_secs() as f64 + end_duration.subsec_nanos() as f64 / 1000_000_000.0,
                     frame_end_duration.as_secs() as f64 + frame_end_duration.subsec_nanos() as f64 / 1000_000_000.0,
-                    fps, //world.file_name().unwrap().to_str().unwrap()
+                    fps, //model.file_name().unwrap().to_str().unwrap()
                 );
             window.set_title(title);
         }

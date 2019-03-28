@@ -1,5 +1,5 @@
 mod world;
 
 pub use {
-    self::world::*
+    self::world::*,
 };

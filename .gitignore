@@ -24,3 +24,6 @@ watch.sh
 *.kdev4
 *.trace
 /home/
+.idea/
+cmake-build-debug/
+

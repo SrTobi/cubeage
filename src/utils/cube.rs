@@ -81,7 +81,7 @@ pub enum Face {
 impl Face {
     /// Computes vertices of the face.
     pub fn vertices(self, base: Vec3<f32>, scale: Vec3<f32>) -> [Vec3<f32>; 4] {
-        use array::*;
+        use crate::array::*;
 
         QUADS[self as usize].map(|i| VERTICES[i]).map(|v| {
             base + scale * v
