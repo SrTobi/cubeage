@@ -1,3 +1,4 @@
+/*
 use noise::{NoiseFn, Perlin};
 use ndarray::prelude::*;
 use ndarray::ArcArray;
@@ -55,9 +56,9 @@ impl WorldRunner {
 
 impl World {
     pub fn new(width: usize, height: usize) -> World {
-        /*let const_pool = ThreadPool::builder()
+        *//*let const_pool = ThreadPool::builder()
             .create()
-            .expect("Failed to create constant thread-pool for World");*/
+            .expect("Failed to create constant thread-pool for World");*//*
 
 
         World {
@@ -100,12 +101,12 @@ impl World {
             .expect("Failed to spawn const eval job")
     }
 
-    /*pub fn run_mut<Fut>(&self, f: Fut)
+    *//*pub fn run_mut<Fut>(&self, f: Fut)
         where
             Fut: Future<Output = ()> + Send + 'static {
         self.mut_pool
             .spawner()
             .spawn(f)
             .expect("Failed to spawn mut job")
-    }*/
-}
+    }*//*
+}*/

@@ -1,7 +1,7 @@
-#![feature(async_await, await_macro, futures_api)]
+#![feature(async_await, await_macro)]
 extern crate camera_controllers;
 extern crate fps_counter;
-#[macro_use] extern crate gfx;
+extern crate gfx;
 extern crate gfx_core;
 extern crate gfx_device_gl;
 extern crate piston;
@@ -13,8 +13,9 @@ extern crate shader_version;
 extern crate vecmath;
 extern crate zip;
 extern crate vek;
+extern crate glutin_window;
 
-
+/*
 //pub mod minecraft;
 pub mod chunk;
 pub mod shader;
@@ -40,6 +41,7 @@ use piston::input::{ MouseRelativeEvent, PressEvent, UpdateEvent,
     AfterRenderEvent, RenderEvent, ResizeEvent };
 use piston::window::WindowSettings;
 use std::cell::RefCell;
+use glutin_window::GlutinWindow;
 
 use utils::cube;
 use utils::array;
@@ -48,7 +50,8 @@ use array::*;
 
 
 
-use std::thread;
+use std::thread;*/
+/*
 
 use futures::executor::{block_on, ThreadPool, LocalPool};
 use futures::task::{SpawnExt, Spawn, LocalSpawnExt};
@@ -78,7 +81,7 @@ pool.run();
 
 
 
-    /*block_on(future::lazy(|lw| {
+    *//*block_on(future::lazy(|lw| {
         loop {
             if let Poll::Ready(Some(_)) = pool.poll_next_unpin(lw) {
                 // found one more
@@ -89,11 +92,12 @@ pool.run();
                 break;
             }
         }
-    }));*/
+    }));*//*
 }
 
 
 
+*/
 
 
 /*
@@ -114,7 +118,7 @@ struct Args {
     flag_path: bool,
     flag_mcversion: String,
 }*/
-
+/*
 pub fn fill_buffer(buffer: &mut Vec<shader::Vertex>, coords: Vec3<i32>, _chunks: [[[&chunk::Chunk; 3]; 3]; 3]) {
 
     let chunk_xyz = coords.map(|x| x as f32) * 16.0;
@@ -153,7 +157,7 @@ pub fn fill_buffer(buffer: &mut Vec<shader::Vertex>, coords: Vec3<i32>, _chunks:
 }
 
 
-fn _main2() {
+fn main() {
 
     // Automagically pull MC assets
     //minecraft::fetch_assets(&args.flag_mcversion);
@@ -190,14 +194,14 @@ fn _main2() {
             "CubeAge loading..."
         );
 
-    let mut window: PistonWindow = WindowSettings::new(
+    let mut window: PistonWindow<GlutinWindow> = WindowSettings::new(
             loading_title,
-            Size { width: 854, height: 480 })
+            Size { width: 854.0, height: 480.0 })
             .fullscreen(false)
             .exit_on_esc(true)
             .samples(0)
             .vsync(false)
-            .opengl(shader_version::opengl::OpenGL::V3_2)
+            //.opengl(shader_version::opengl::OpenGL::V3_2)
             .build()
             .unwrap();
 
@@ -441,4 +445,35 @@ fn _main2() {
 
         first_person.event(&e);
     }
+}*/
+
+extern crate futures;
+
+use futures::executor::{block_on, LocalPool};
+use futures::task::{SpawnExt, LocalSpawnExt};
+
+fn main() {
+
+
+    let f1 = async {
+        println!("f1")
+    };
+
+    let mut pool = LocalPool::new();
+
+    let mut spawner = pool.spawner();
+
+    let f2 = async move {
+        let handle = spawner.spawn_local_with_handle(f1).unwrap();
+        println!("f2-begin");
+        handle.await;
+        println!("f2");
+    };
+    let mut spawner = pool.spawner();
+
+    //let mut spawner = pool.spawner();
+    spawner.spawn_local(f2);
+
+    //pool.try_run_one();
+    pool.run();
 }

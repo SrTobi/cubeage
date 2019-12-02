@@ -11,7 +11,6 @@ homepage = "http://CubeAge.piston.rs"
 exclude = ["home/*"]
 edition = "2018"
 
-
 [profile.release]
 opt-level = 2
 debug = false
@@ -22,20 +21,21 @@ name = "cube_age"
 path = "src/main.rs"
 
 [dependencies]
-futures-preview = "0.3.0-alpha.12"
-camera_controllers = "0.24.0"
+futures-preview = { version = "=0.3.0-alpha.17", features = ["async-await", "nightly"] }
+camera_controllers = "0.31.0"
 fps_counter = "1.0.0"
-gfx = "0.17"
-gfx_core = "0.8"
-gfx_device_gl = "0.15"
-libc = "0.2.43"
+gfx = "0.18.1"
+gfx_core = "0.9.1"
+gfx_device_gl = "0.16.1"
+libc = "0.2.59"
 memmap = "0.7.0"
 ndarray = "0.12.1"
 noise = "0.5.1"
-piston = "0.37.0"
-piston_window = "0.80"
+piston = "0.49.0"
+pistoncore-glutin_window = "0.63.0"
+piston_window = { version = "0.100", features = ["glutin"] }
 rustc-serialize = "0.3"
-shader_version = "0.3.0"
-vecmath = "0.3.0"
-zip = "0.4"
-vek = "0.9.5"
+shader_version = "0.6.0"
+vecmath = "1.0.0"
+zip = "0.5.2"
+vek = "0.9.8"

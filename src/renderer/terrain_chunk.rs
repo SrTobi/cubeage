@@ -1,3 +1,4 @@
+/*
 use vek::vec::Vec3;
 use futures::future::FutureObj;
 use futures::future::RemoteHandle;
@@ -30,3 +31,4 @@ impl TerrainChunk {
     }
 }
 
+*/

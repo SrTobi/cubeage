@@ -1,3 +1,4 @@
+/*
 use vek::vec::Vec3;
 use futures::future::RemoteHandle;
 use crate::renderer::{BlockState, TerrainProvider, TerrainChunk};
@@ -20,10 +21,10 @@ impl TerrainProvider for WorldChunkProvider {
         let world = self.world.clone();
         self.world.eval_const(async move {
             let mut chunk = TerrainChunk::new();
-            /*for ((x, y, z), state) in chunk.blocks.indexed_iter_mut() {
+            *//*for ((x, y, z), state) in chunk.blocks.indexed_iter_mut() {
                 *state = BlockState { value: if z <= world.height_map[(x, y)] { 1 } else { 0 } }
-            }*/
+            }*//*
             chunk
         })
     }
-}
+}*/
